@@ -2,7 +2,7 @@ Introduction
 ---
 This is an attempt at writing a PID system from scratch in Node.js
 
-All my experience with PID comes from From the Depths and Wikipedia, and I'm not a really good programmer.
+All my knowledge about and experience with PIDs comes from From the Depths and Wikipedia, and I'm not a good programmer.
 I might attempt this in C one day. Or rust perhaps.
 
 How to run
