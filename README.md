@@ -13,7 +13,7 @@ Install [node.js-t](https://nodejs.org/)
 
 2. Compile and run
 ```bash
-npx tsc PID.ts && node PID.js
+npx tsc --outDir ./build main.ts && node ./build/main.js
 ```
 
 (instructions may be incomplete)
