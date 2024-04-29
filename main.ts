@@ -1,5 +1,6 @@
 import { renderbar, renderbar2, rendergraph } from "./Visual"
 import { PID } from "./PID"
+import { updateTerminal } from "./Terminalops"
 
 // PID in node. God help us all.
 
@@ -49,8 +50,8 @@ async function main() {
             console.log(`Thrust: ${drive}`)
             console.log(`Speed: ${speed}`)
         }
-        console.log(rendergraph(current, setPoint))
-        renderbar(current,setPoint)
+        updateTerminal((rendergraph(current, setPoint) + renderbar(current, setPoint)))
+        
 
         // setPoint = setPoint + index / 2
         /**

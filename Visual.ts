@@ -31,12 +31,16 @@ export function renderbar(curr: number, sp: number, width?: number) {
             bar += '-'
         }
     }
+    bar = `<${bar}>${Math.trunc(curr)}/${Math.trunc(sp)}`
 
     // let fullbar: string = `<${bar}>${current}/${setPoint}`
     // Where the magic happens
+    /**
     process.stdout.clearLine(0)
     process.stdout.cursorTo(0)
-    process.stdout.write(`<${bar}>${Math.trunc(curr)}/${Math.trunc(sp)}`)
+    process.stdout.write(bar)
+     */
+    return bar
 }
 
 // renders a bar, but vertically. Whoa
@@ -122,7 +126,7 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
 
     if (graphstore.length > graphwidth) {
         graphstore.pop()
-        
+
     }
 
 
@@ -146,8 +150,8 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
         // we don't need to look at all states, just the ones we render. This should be fixed in future
         for (const state of graphstore) {
             /* current/biggeststate: how much do we fulfill the setpoint (%) */
-            if ((graphheight - yindex) === Math.trunc((state.sp / (biggeststate + (biggeststate*setPointLinePos))) * graphheight)) {
-                if ((state.crnt / (biggeststate + (biggeststate*setPointLinePos))) * graphheight > (graphheight - yindex)) {
+            if ((graphheight - yindex) === Math.trunc((state.sp / (biggeststate + (biggeststate * setPointLinePos))) * graphheight)) {
+                if ((state.crnt / (biggeststate + (biggeststate * setPointLinePos))) * graphheight > (graphheight - yindex)) {
                     render += renderrow('=', barwidth)
                 }
                 else {
@@ -155,7 +159,7 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
                 }
             }
 
-            else if ((state.crnt / (biggeststate + (biggeststate*setPointLinePos))) * graphheight > (graphheight - yindex)) {
+            else if ((state.crnt / (biggeststate + (biggeststate * setPointLinePos))) * graphheight > (graphheight - yindex)) {
                 render += renderrow('#', barwidth)
             }
 
@@ -190,4 +194,4 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
 
 renderbar
 
-export function rendergraph2(crnt: number, sp: number, width?: number, height?: number) {}
+export function rendergraph2(crnt: number, sp: number, width?: number, height?: number) { }
