@@ -31,7 +31,7 @@ async function main() {
         //sleep
         await new Promise(resolve => setTimeout(resolve, 16));
 
-        const drive = PID(setPoint, current, 0.1, 0.2, 0.02, 1)
+        const drive = PID(setPoint, current, 0.2, 0.5, 0.1, 1)
 
 
         // The drive and gravity are added to the speed

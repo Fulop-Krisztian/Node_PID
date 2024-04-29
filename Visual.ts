@@ -118,10 +118,11 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
     if (state.crnt > biggeststate) { biggeststate = state.crnt }
 
     // push to the front of the graphstore. This is ready for rendering
-    graphstore.unshift(state)
+    graphstore.push(state)
 
     if (graphstore.length > graphwidth) {
         graphstore.pop()
+        
     }
 
 
@@ -145,8 +146,8 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
         // we don't need to look at all states, just the ones we render. This should be fixed in future
         for (const state of graphstore) {
             /* current/biggeststate: how much do we fulfill the setpoint (%) */
-            if (yindex === Math.trunc((state.sp / biggeststate) * graphheight)) {
-                if ((state.crnt / biggeststate) * graphheight > yindex) {
+            if ((graphheight - yindex) === Math.trunc((state.sp / (biggeststate + (biggeststate*setPointLinePos))) * graphheight)) {
+                if ((state.crnt / (biggeststate + (biggeststate*setPointLinePos))) * graphheight > (graphheight - yindex)) {
                     render += renderrow('=', barwidth)
                 }
                 else {
@@ -154,12 +155,12 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
                 }
             }
 
-            else if ((state.crnt / biggeststate) * graphheight > yindex) {
-                render += renderrow(' ', barwidth)
+            else if ((state.crnt / (biggeststate + (biggeststate*setPointLinePos))) * graphheight > (graphheight - yindex)) {
+                render += renderrow('#', barwidth)
             }
 
             else {
-                render += renderrow('#', barwidth)
+                render += renderrow(' ', barwidth)
             }
 
 
@@ -179,10 +180,14 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
         }
         render += '\n'
     }
-
+    console.log('\x1B[2J\x1B[H')
     return render
 
 
 
 }
 
+
+renderbar
+
+export function rendergraph2(crnt: number, sp: number, width?: number, height?: number) {}
