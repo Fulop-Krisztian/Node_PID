@@ -32,7 +32,7 @@ export function PID(sp: number, cur: number, kp: number, kd: number, ki: number,
     const integralDrive = ki * calcIntegral(err, intacc, time)
     const output = errorDrive + derivativeDrive + integralDrive // proportional + derivative + integral drive. numbers should be tuned using kp, kd and ki for best results
 
-    // console.log(errorDrive,derivativeDrive,integralDrive)
+    //console.log(errorDrive,derivativeDrive,integralDrive)
     //console.log(current)
     //console.log(output)
     // current = current + (output * ks)

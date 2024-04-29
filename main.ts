@@ -1,13 +1,14 @@
 import { renderbar, renderbar2, rendergraph } from "./Visual"
 import { PID } from "./PID"
 import { updateTerminal } from "./Terminalops"
+import { stat } from "./@types"
 
 // PID in node. God help us all.
 
 // DEFINITIONS
 
-// the value the system should aim for 
-let setPoint: number = 100
+// the value the system should aim for (designed for whole large (>100) numbers)
+let setPoint: number = 10000
 // the current value of the system
 let current: number = 0
 let speed: number = 0
@@ -38,8 +39,10 @@ async function main() {
         // The drive and gravity are added to the speed
         speed = speed + drive * 1 + (interval * gravity)
 
-        // drag is then calculated so the number doesn't get wacky
-        speed = speed - (resistance * (speed * speed))
+        // drag is then calculated so the number doesn't get wacky (the correct formula is unused)
+
+        // speed = speed - (resistance * (speed * speed))
+        speed = speed - ((resistance * speed) * (resistance * setPoint))
 
 
         current += speed
@@ -50,8 +53,13 @@ async function main() {
             console.log(`Thrust: ${drive}`)
             console.log(`Speed: ${speed}`)
         }
-        updateTerminal((rendergraph(current, setPoint) + renderbar(current, setPoint)))
-        
+
+        const stats: stat[] = [
+            {name: 'Thrust', var: drive},
+            {name: 'Speed', var: speed},
+        ]
+        updateTerminal((rendergraph(current, setPoint) + renderbar(current, setPoint, stats,)))
+
 
         // setPoint = setPoint + index / 2
         /**

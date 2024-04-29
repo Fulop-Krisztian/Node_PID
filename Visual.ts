@@ -1,6 +1,9 @@
 // renders a horizontal bar. In the console no less. 
 //<#############---|--->23.00/123.33
-export function renderbar(curr: number, sp: number, width?: number) {
+
+import { stat } from "./@types"
+
+export function renderbar(curr: number, sp: number, stats: stat[]) {
 
     // we should render the setpoint at 75% of the length. 
     const setPointLinePos: number = 0.75
@@ -8,7 +11,7 @@ export function renderbar(curr: number, sp: number, width?: number) {
     // The length of the decor on the bar
     // it will look something like this:
     //<#############---|--->23.00/123.33
-    const decorlength: number = curr.toString.length + sp.toString.length + 3 // 3 for the < > /
+    let decorlength: number = curr.toString.length + sp.toString.length + 3 // 3 for the < > /
 
     // The length of the bar in characters. Currently it's the length of the console -10 chars, or 80 chars if the length is undefined
     const barlength: number = process.stdout.columns - decorlength - 10 || 80
@@ -31,7 +34,14 @@ export function renderbar(curr: number, sp: number, width?: number) {
             bar += '-'
         }
     }
-    bar = `<${bar}>${Math.trunc(curr)}/${Math.trunc(sp)}`
+
+    let barstats: string = ''
+    for (const stat of stats) {
+        barstats += `\n${stat.name}: ${stat.var}`
+    }
+    
+
+    bar = `<${bar}>${Math.trunc(curr)}/${Math.trunc(sp)}` + barstats
 
     // let fullbar: string = `<${bar}>${current}/${setPoint}`
     // Where the magic happens
@@ -184,14 +194,13 @@ export function rendergraph(crnt: number, sp: number, width?: number, height?: n
         }
         render += '\n'
     }
-    console.log('\x1B[2J\x1B[H')
     return render
 
 
 
 }
 
+export function rendergraph2(crnt: number, sp: number, width?: number, height?: number) { 
 
-renderbar
 
-export function rendergraph2(crnt: number, sp: number, width?: number, height?: number) { }
+}
