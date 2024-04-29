@@ -8,10 +8,10 @@ import { stat } from "./@types"
 // DEFINITIONS
 
 // the value the system should aim for (designed for whole large (>100) numbers)
-let setPoint: number = 10000
+let setPoint: number = 200
 // the current value of the system
-let current: number = 0
-let speed: number = 0
+let current: number = 300
+let speed: number = 1000
 let gravity: number = -10 // units/interval/interval
 let resistance: number = 0.005
 
@@ -35,18 +35,25 @@ async function main() {
 
         const drive = PID(setPoint, current, 0.2, 0.5, 0.1, 1)
 
+        // drag is calculated so the speed doesn't get too wacky (P is whatever you want it to be)
+        const dragCalculation = (resistance * Math.sqrt(speed));
+        let drag: number = 0
+        if (isNaN(dragCalculation) || Math.abs(dragCalculation) < 0.001) {
+            drag = 0; // Set drag to 0 if it's NaN or very close to 0
+        } else {
+            drag = dragCalculation;
+        }
 
-        // The drive and gravity are added to the speed
-        speed = speed + drive * 1 + (interval * gravity)
-
-        // drag is then calculated so the number doesn't get wacky (the correct formula is unused)
 
         // speed = speed - (resistance * (speed * speed))
-        speed = speed - ((resistance * speed) * (resistance * setPoint))
 
+        // The drive and gravity are added to the speed
+        // In the future the drive should just drive something, not directly act on the body. That's the whole point of a PID, the adaptability of it
+        speed = speed + (drive * 1) + (interval * gravity) - drag
 
+        // we add the speed to the current position
         current += speed
-
+        /**
         if (debug) {
             console.log('\n')
             console.log('Node PID')
@@ -54,9 +61,14 @@ async function main() {
             console.log(`Speed: ${speed}`)
         }
 
+
+        */
         const stats: stat[] = [
-            {name: 'Thrust', var: drive},
-            {name: 'Speed', var: speed},
+            { name: 'Thrust', var: drive },
+            { name: 'Gravity', var: gravity },
+            { name: 'Speed', var: speed },
+            { name: 'Drag', var: drag },
+
         ]
         updateTerminal((rendergraph(current, setPoint) + renderbar(current, setPoint, stats,)))
 
