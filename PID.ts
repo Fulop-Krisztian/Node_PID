@@ -4,12 +4,16 @@
 // persistent variables needed for functionality 
 let preverror: number = 0
 let intacc: number = 0
+let inttimeacc: number = 0
 
 // kp, kd, and ki are the multipliers for each of the controls. (higher means higher priority, could easily unbalance the system) 
-// time is for time elapsed since last run of function. always 1 if unset
-export function PID(sp: number, cur: number, kp: number, kd: number, ki: number, time?: number): number {
+// ki is the length of time the integral should take into account. Could make the PID very unstable if both this and ki are high
+// time is for time elapsed since last run of function. (This and ti should use the same measure, for example: ti = 100ms time=0.1ms; ti=10s time=0.0001s)
+export function PID(sp: number, cur: number, kp: number, kd: number, ki: number, ti?: number,time?: number): number {
     // if time is undefined set it to one
     time ? null : time = 1
+    ti ? null : ti = Infinity
+    
 
     // Calcualtion of the derivative term
     function calcDerivative(error: number, perror: number, interval: number) {
@@ -19,11 +23,14 @@ export function PID(sp: number, cur: number, kp: number, kd: number, ki: number,
     }
     // Calculation of the integral term
     function calcIntegral(error: number, acc: number, interval: number) {
+        // integral time control to be implemented
+        // inttimeacc += ti
         const integral = acc + (error * interval)
         intacc = integral
         return integral
     }
 
+    
     // Calculation of the error term
     const err = sp - cur
 
